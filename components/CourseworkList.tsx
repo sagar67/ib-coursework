@@ -2,52 +2,44 @@
 'use client'; // Mark as a client component
 
 import React, { useEffect, useState } from 'react';
+import useUploadStore from '../store/uploadStore';
 
 interface Coursework {
-  title: string;
-  subject: string;
-  wordCount: number;
-  readTime: string;
-  fileName: string;
+  name: string;
+  size: number;
 }
 
 const CourseworkList: React.FC = () => {
-  const [courseworkList, setCourseworkList] = useState<Coursework[]>([]);
+  const [loading, setLoading] = useState(true);
+  const uploadedFiles = useUploadStore((state) => state.uploadedFiles);
 
   useEffect(() => {
-    const storedCoursework = localStorage.getItem('courseworkList');
-    if (storedCoursework) {
-      setCourseworkList(JSON.parse(storedCoursework));
-    }
+    setLoading(false);
   }, []);
-
-  const addCoursework = (file: File) => {
-    const newCoursework: Coursework = {
-      title: file.name,
-      subject: 'Unknown', // Placeholder until you implement the subject input
-      wordCount: Math.floor(Math.random() * 1000) + 200, // Dummy word count
-      readTime: `${Math.floor(Math.random() * 10) + 1} min read`, // Dummy read time
-      fileName: file.name,
-    };
-
-    const updatedList = [...courseworkList, newCoursework];
-    setCourseworkList(updatedList);
-    localStorage.setItem('courseworkList', JSON.stringify(updatedList));
-  };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-4">
       <h2 className="text-lg font-semibold mb-4">My Coursework</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {courseworkList.map((coursework, index) => (
-          <div key={index} className="border rounded-lg p-4">
-            <h3 className="font-bold">{coursework.title}</h3>
-            <p>{coursework.subject}</p>
-            <p>{coursework.wordCount} words</p>
-            <p>{coursework.readTime}</p>
-          </div>
-        ))}
-      </div>
+      {loading ? (
+        <p className="text-gray-600">Loading...</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {uploadedFiles.length > 0 ? (
+            <div className="mt-4">
+              <h3 className="text-gray-700 text-lg font-semibold">Uploaded Files:</h3>
+              <ul className="list-disc pl-5">
+                {uploadedFiles.map((file, index) => (
+                  <li key={index} className="text-gray-600">
+                    {file.name} - {Math.round(file.size / 1024)} KB
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="text-gray-600">No uploaded files available.</p>
+          )}
+        </div>
+      )}
     </div>
   );
 };

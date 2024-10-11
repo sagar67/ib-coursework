@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useCourseworkStore from '../store/courseworkStore';
+import useCourseworkStore from '../store/uploadStore';
 
 interface CourseworkFormProps {
   onSubmit: (data: { title: string; type: string; subject: string }) => void;
