@@ -15,7 +15,7 @@ const Home: React.FC = () => {
          <span className="text-[#6947bf]">We get you</span>.</h1>
       <FileUpload onFileUpload={handleFileUpload} />
       <CourseworkList />
-      <ExploreCoursework />
+      {/* <ExploreCoursework /> */}
     </div>
   );
 };

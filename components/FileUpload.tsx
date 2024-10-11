@@ -1,9 +1,8 @@
-// components/FileUpload.tsx
-'use client'; // Mark as a client component
+'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
+import { faFileUpload, faStar } from '@fortawesome/free-solid-svg-icons';
 import useUploadStore from '../store/uploadStore';
 
 const FileUpload: React.FC = () => {
@@ -24,7 +23,7 @@ const FileUpload: React.FC = () => {
     const files = localStorage.getItem('uploadedFiles');
     if (files) {
       const parsedFiles = JSON.parse(files);
-      parsedFiles.forEach((file: { name: string; size: number; type: string }) => {
+      parsedFiles.forEach((file: { name: string; size: number; type: string , title: string, courseworkType: string, subject: string }) => {
         addFile(file);
       });
     }
@@ -66,8 +65,14 @@ const FileUpload: React.FC = () => {
   };
 
   const handleFileUpload = (file: File) => {
-    // const newFileName = generateUniqueFileName(file.name);
+     const fileSizeLimit = 25 * 1024 * 1024; // 25 MB
+
+    if (file.size > fileSizeLimit) {
+      setError('File size exceeds the 25 MB limit.');
+      return;
+    }
     setAddedFile(file);
+    setError(null)
   };
 
   const handleEvaluateScore = () => {
@@ -83,7 +88,7 @@ const FileUpload: React.FC = () => {
     setError(null);
     setUploading(true);
     const newFileName = generateUniqueFileName(addedFile.name);
-    const newFile = { name: newFileName, size: addedFile.size, type: 'application/pdf' };
+    const newFile = { name: newFileName, size: addedFile.size, type: 'application/pdf' , title: title, courseworkType: courseworkType, subject: subject};
 
     let progress = 0;
     const uploadInterval = setInterval(() => {
@@ -104,7 +109,7 @@ const FileUpload: React.FC = () => {
         }
 
         setUploading(false);
-        setAddedFile(null); // Reset file name after uploading
+        setAddedFile(null);
         setTimeout(() => {
           setUploadStatus(null);
         }, 2000);
@@ -120,7 +125,7 @@ const FileUpload: React.FC = () => {
         onDrop={handleDrop}
       >
         <FontAwesomeIcon icon={faFileUpload} className="h-10 w-10 mx-auto text-gray-400 mt-12" />
-        <p className="text-gray-500 text-2xl">{addedFile?.name ? addedFile?.name : 'Drag and drop a PDF or click to upload'}</p>
+        <p className="text-gray-500 text-2xl">{addedFile?.name ? addedFile?.name : 'Drag and drop a PDF'}</p>
         <p className="text-gray-500 text-base">*Limit 25 MB per file</p>
         <input
           type="file"
@@ -146,7 +151,7 @@ const FileUpload: React.FC = () => {
           value={courseworkType}
           onChange={(e) => {
             setCourseworkType(e.target.value);
-            setError(null); // Clear error on change
+            setError(null);
           }}
         >
           <option value="Coursework Type">Coursework Type</option>
@@ -188,7 +193,18 @@ const FileUpload: React.FC = () => {
           }}
         />
       </div>
-      <button className="mt-4 px-4 py-2 bg-[#adb8c9] text-white rounded-3xl" onClick={handleEvaluateScore}>Evaluate Your Score</button>
+        <div className={`mt-4 px-4 py-2 ${subject !== 'Subject' && courseworkType !== 'Coursework Type' && title.trim() !== '' ? 'bg-[#6947bf]' : 'bg-[#98a1bb]'} text-white rounded-3xl w-auto sm:w-auto inline-flex justify-center items-center space-x-2`}>
+          <FontAwesomeIcon
+            icon={faStar}
+            className={`h-4 w-4 ${subject !== 'Subject' && courseworkType !== 'Coursework Type' && title.trim() !== '' ? 'text-[#6947bf]' : 'text-[#98a1bb]'} bg-[#eaf0f2] rounded-full p-2`}
+          />
+          <button
+            className={`px-4 py-2 text-white text-base sm:text-xl rounded-3xl`}
+            onClick={handleEvaluateScore}
+          >
+            Evaluate your Score
+          </button>
+        </div>
 
       {uploadProgress > 0 && (
         <div className="mt-4">
