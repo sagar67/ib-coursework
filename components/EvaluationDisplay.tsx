@@ -2,20 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faChevronUp, faChevronDown, faPlus, faMinus, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faExpand, faCompress } from "@fortawesome/free-solid-svg-icons";
+import { faChevronUp, faChevronDown, faMagnifyingGlassMinus, faMagnifyingGlassPlus, faExpand, faCompress } from "@fortawesome/free-solid-svg-icons";
 import 'tailwindcss/tailwind.css';
 import { useRouter } from "next/router";
 import { dummyData } from "./common/dummydata";
 import ExploreCoursework from "./ExploreCoursework";
 
-// Dummy Data for Evaluation
-const evaluationData = [
-  { title: "Understanding Knowledge Questions", score: "4/5" },
-  { title: "Analysis", score: "3/5" },
-  { title: "Conclusion", score: "5/5" },
-];
-
-// Circular Progress Bar Component
 const CircularProgressBar = ({ percentage, radius }) => {
   console.log('percentage',percentage);
   const strokeColor = percentage >=70 ? '#3cc28a' : percentage >=40 ? '#f9c94e' : '#eb751f';
@@ -48,7 +40,6 @@ const CircularProgressBar = ({ percentage, radius }) => {
   );
 };
 
-// Criterion Item with Drop-Down
 const Criterion = ({ criterion, score, details }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -98,7 +89,6 @@ export default function EvaluationDisplay() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [pdfData, setPdfData] = useState({});
   const router = useRouter();
-  const { courseData } = router.query;
 
   useEffect(() => {
     if (router.query.courseData) {
@@ -138,7 +128,7 @@ export default function EvaluationDisplay() {
     <div className="bg-[#e5ecf3] min-h-screen p-8 flex">
       <main className={`flex-grow p-6 bg-[#e5ecf3]} rounded-lg flex space-x-4`}>
         <section className={`bg-white shadow-lg rounded-2xl ${isFullScreen ? 'w-[100%]' : 'w-[70%]'} flex flex-col overflow-hidden ${isCollapsed ? "h-[6vh]" : "h-[90vh]"} mt-0`}>
-          <div className="flex justify-between mb-4 bg-[#f1f5f9] p-6 border-b-2 border-[#c1ccd6]">
+          <div className="flex justify-between mb-4 bg-[#f1f5f9] p-8 border-b-2 border-[#c1ccd6]">
             <h2 className="font-bold text-gray-700">{`${pdfData.title}.pdf`}</h2>
             <div className="flex items-center space-x-4">
               <button
