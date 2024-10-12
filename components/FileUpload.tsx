@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileUpload, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faFileAlt, faFileUpload, faStar, faTimes } from '@fortawesome/free-solid-svg-icons';
 import useUploadStore from '../store/uploadStore';
 import { useRouter } from 'next/router';
 
@@ -130,31 +130,58 @@ const FileUpload: React.FC = () => {
     }, 100);
 
   };
-
+  console.log('addFile',addFile)
   return (
     <div className="bg-[#f5f7fa] p-6 rounded-3xl shadow-md mb-14 mt-14">
-       <div
+      <div
         className="border-dashed border-2 bg-white border-[#cec4eb] p-6 text-center cursor-pointer rounded-xl"
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        <FontAwesomeIcon icon={faFileUpload} className="h-10 w-10 mx-auto text-gray-400 mt-12" />
-        <p className="text-gray-500 text-2xl">{addedFile?.name ? addedFile?.name : 'Drag and drop a PDF'}</p>
-        <p className="text-gray-500 text-base">*Limit 25 MB per file</p>
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={handleFileChange}
-          className="hidden"
-          ref={fileInputRef}
-        />
-        <button
-          className="my-12 px-8 py-2 bg-white text-[#6947bf] font-bold text-lg rounded-3xl border-2 border-[#cec4eb]"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          {addedFile?.name ? 'Change File' : 'Upload your file'}
-        </button>
+  {addedFile == null ? (
+    <div>
+      <FontAwesomeIcon icon={faFileUpload} className="h-10 w-10 mx-auto text-gray-400 mt-12" />
+      <p className="text-gray-500 text-2xl">{addedFile?.name ? addedFile?.name : 'Drag and drop a PDF'}</p>
+      <p className="text-gray-500 text-base">*Limit 25 MB per file</p>
+      <input
+        type="file"
+        accept="application/pdf"
+        onChange={handleFileChange}
+        className="hidden"
+        ref={fileInputRef}
+      />
+      <button
+        className="my-12 px-8 py-2 bg-white text-[#6947bf] font-bold text-lg rounded-3xl border-2 border-[#cec4eb]"
+        onClick={() => fileInputRef.current?.click()}
+      >
+        {addedFile?.name ? 'Change File' : 'Upload your file'}
+      </button>
+    </div>
+  ) : (
+    <div className="flex items-center justify-center border border-gray-300 rounded-2xl p-2 w-72 bg-gray-50 mx-auto my-20">
+      <div className="w-10 h-10 bg-gray-300 flex items-center justify-center rounded mr-4">
+        <FontAwesomeIcon icon={faFileAlt} className="h-4 w-4 mx-auto text-gray-400 p-4" />
       </div>
+      <div className="flex-grow flex items-center overflow-hidden"> {/* Allow overflow */}
+        <FontAwesomeIcon icon={faCheck} className="text-green-600 mr-2" />
+        <span className="text-ellipsis whitespace-nowrap overflow-hidden"> {/* Prevent overflow */}
+          {addedFile?.name}
+        </span>
+      </div>
+      <div
+  className="cursor-pointer text-gray-600 text-xl relative bottom-7 left-3 flex items-center justify-center w-8 h-6 bg-white border-[#c1ccd6] border-2 rounded-full" 
+  onClick={() => {
+    setAddedFile(null);
+  }}
+>
+  <FontAwesomeIcon icon={faTimes} className="h-4 w-4" /> {/* Ensure the icon fits within the circle */}
+</div>
+
+</div>
+
+  )}
+</div>
+
 
     <div className="mt-4">
         <p className="text-gray-500 text-xl mt-4 mb-2">Select your course & subjects*</p>
