@@ -1,5 +1,5 @@
 // components/ExploreCoursework.tsx
-import React, { useState } from 'react';
+import React from 'react';
 
 const ExploreCoursework: React.FC = () => {
 

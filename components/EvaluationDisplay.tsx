@@ -40,7 +40,7 @@ const CircularProgressBar = ({ percentage, radius }) => {
   );
 };
 
-const Criterion = ({ criterion, score, details }) => {
+const Criterion = ({ criterion, score }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -201,7 +201,6 @@ export default function EvaluationDisplay() {
                 key={index}
                 criterion={item.criterion}
                 score={item.score}
-                details={item.details}
               />
             ))}
           </div>

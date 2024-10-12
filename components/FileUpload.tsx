@@ -7,7 +7,6 @@ import useUploadStore from '../store/uploadStore';
 import { useRouter } from 'next/router';
 
 const FileUpload: React.FC = () => {
-  const [uploading, setUploading] = useState(false);
   const [courseworkType, setCourseworkType] = useState<string>('Coursework Type');
   const [subject, setSubject] = useState<string>('Subject');
   const [title, setTitle] = useState<string>('');
@@ -87,7 +86,6 @@ const FileUpload: React.FC = () => {
       return;
     }
     setError(null);
-    setUploading(true);
     const newFileName = generateUniqueFileName(addedFile.name);
     const newFile = { name: newFileName, size: addedFile.size, type: 'application/pdf' , title: title, courseworkType: courseworkType, subject: subject};
     const coursework = {
@@ -117,7 +115,6 @@ const FileUpload: React.FC = () => {
           localStorage.setItem('uploadedFiles', JSON.stringify([...existingFiles, newFile]));
         }
 
-        setUploading(false);
         setAddedFile(null);
         setTimeout(() => {
            router.push({
