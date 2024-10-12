@@ -45,7 +45,7 @@ export default function Home() {
       {/* My coursework section */}
       <section>
         <h2 className="text-xl font-bold text-[#5b6170] mb-4">My coursework</h2>
-        <div className="flex space-x-4 mb-4">
+        <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
           {data.map((item, index) => (
             <CourseworkCard key={index} coursework={item} />
           ))}

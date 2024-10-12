@@ -1,47 +1,31 @@
 // components/ExploreCoursework.tsx
 import React, { useState } from 'react';
 
-const dummyCoursework = [
-  { id: '1', title: 'Essay on Global Warming', category: 'Essay', subject: 'Science' },
-  { id: '2', title: 'Research on AI', category: 'Research', subject: 'Computer Science' },
-  { id: '3', title: 'Essay on Economic Growth', category: 'Essay', subject: 'Economics' },
-  { id: '4', title: 'Research on Quantum Physics', category: 'Research', subject: 'Physics' },
-];
-
 const ExploreCoursework: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<string>('Essay');
-
-  const filteredCoursework = dummyCoursework.filter((cw) => cw.category === selectedTab);
 
   return (
     <div>
-      {/* Tab Navigation */}
-      <div className="flex space-x-4 mb-4">
-        <button
-          className={`p-2 ${selectedTab === 'Essay' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-          onClick={() => setSelectedTab('Essay')}
-        >
-          Essay
-        </button>
-        <button
-          className={`p-2 ${selectedTab === 'Research' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-          onClick={() => setSelectedTab('Research')}
-        >
-          Research
-        </button>
+      <div className='border border-[#d6dfe4] rounded-2xl px-5'/>
+    <div className="p-5 font-sans">
+      <p>The essay identifies and focuses on the knowledge question regarding the resolvability of disputes over knowledge claims within disciplines.</p>
+      <div className="mt-5">
+        <h2 className='text-xl font-bold mb-2'>Strengths</h2>
+        <div className="border border-green-600 p-2 rounded-2xl">
+          <p>✅ Demonstrates a good understanding of the prescribed title and the associated knowledge questions.</p>
+          <p>✅ Addresses the nature of disputes in both the Natural Sciences and Human Sciences effectively.</p>
+        </div>
       </div>
-
-      {/* Coursework Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {filteredCoursework.map((cw) => (
-          <div key={cw.id} className="p-4 border rounded shadow">
-            <h3 className="text-lg font-bold">{cw.title}</h3>
-            <p>Subject: {cw.subject}</p>
-            <p>Category: {cw.category}</p>
-          </div>
-        ))}
+      
+      <div className="mt-5">
+        <h2 className='text-xl font-bold mb-2'>Scope of Improvement</h2>
+        <div className="border border-yellow-600 rounded-2xl p-2">
+          <p>⚠️ Demonstrates a good understanding of the prescribed title and the associated knowledge questions.</p>
+          <p>⚠️ Addresses the nature of disputes in both the Natural Sciences and Human Sciences effectively.</p>
+        </div>
       </div>
     </div>
+    </div>
+
   );
 };
 

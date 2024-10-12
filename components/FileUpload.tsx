@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileUpload, faStar } from '@fortawesome/free-solid-svg-icons';
 import useUploadStore from '../store/uploadStore';
+import { useRouter } from 'next/router';
 
 const FileUpload: React.FC = () => {
   const [uploading, setUploading] = useState(false);
@@ -18,7 +19,7 @@ const FileUpload: React.FC = () => {
   const uploadedFiles = useUploadStore((state) => state.uploadedFiles);
   const addFile = useUploadStore((state) => state.addFile);
   const [addedFile, setAddedFile] = useState<string | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
     const files = localStorage.getItem('uploadedFiles');
     if (files) {
@@ -89,7 +90,15 @@ const FileUpload: React.FC = () => {
     setUploading(true);
     const newFileName = generateUniqueFileName(addedFile.name);
     const newFile = { name: newFileName, size: addedFile.size, type: 'application/pdf' , title: title, courseworkType: courseworkType, subject: subject};
-
+    const coursework = {
+          title: title,
+          subject: subject,
+          readingTime: "18 min read",
+          words: "3288 words",
+          rating: "7/7",
+          language: "English",
+          courseworkType:courseworkType,
+      }
     let progress = 0;
     const uploadInterval = setInterval(() => {
       if (progress < 100) {
@@ -111,10 +120,15 @@ const FileUpload: React.FC = () => {
         setUploading(false);
         setAddedFile(null);
         setTimeout(() => {
+           router.push({
+            pathname: "/coursework-viewer",
+            query: { courseData: JSON.stringify(coursework) },
+          });
           setUploadStatus(null);
         }, 2000);
       }
     }, 100);
+
   };
 
   return (
